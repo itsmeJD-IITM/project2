@@ -1,0 +1,8 @@
+fastapi
+uvicorn[standard]
+playwright
+httpx
+pandas
+pdfplumber
+python-multipart
+pydantic
