@@ -230,6 +230,40 @@ async def solve_quiz_task(payload: Dict[str, Any]) -> Dict[str, Any]:
             return {"success": False, "reason": f"Submission failed: {e}", "answer": answer}
 
 
+
+@app.get("/")
+async def root():
+    return {
+        "service": "LLM Quiz Solver",
+        "status": "running",
+        "endpoints": {
+            "solve (POST)": "/solve"
+        },
+        "note": "POST to /solve with JSON {email, secret, url}"
+    }
+
+@app.get("/health")
+async def health():
+    # simple health-check: responds 200 when app is up
+    return {"status": "ok"}
+
+from fastapi.responses import HTMLResponse
+
+@app.get("/", response_class=HTMLResponse)
+async def root_html():
+    return """
+    <html>
+      <head><title>LLM Quiz Solver</title></head>
+      <body>
+        <h1>LLM Quiz Solver</h1>
+        <p>Service is running. Use <code>POST /solve</code> with JSON <code>{email, secret, url}</code>.</p>
+      </body>
+    </html>
+    """
+
+
+
+
 @app.post("/solve")
 async def solve_endpoint(request: Request):
     try:
